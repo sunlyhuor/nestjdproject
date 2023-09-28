@@ -1,0 +1,29 @@
+version: '3'
+services:
+  backend:
+    build: ./
+    ports:
+      - 3000:3000
+  db:
+    image: postgres:12
+    restart: always
+    environment:
+      POSTGRES_USER: 'sunlyhuor'
+      POSTGRES_PASSWORD: 'Huor1234'
+      POSTGRES_DB: 'schoolms_db'
+    volumes:
+      - postgresql:/var/lib/postgresql/data
+  pgadmin:
+    image: dpage/pgadmin4:7.3
+    restart: always
+    ports:
+      - 5050:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: 'sunlyhuor@huorclass.com'
+      PGADMIN_DEFAULT_PASSWORD: 'Huor1234'
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+volumes:
+  postgresql:
+  backend:
+  pgadmin:

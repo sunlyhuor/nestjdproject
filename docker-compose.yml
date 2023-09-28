@@ -1,0 +1,51 @@
+version: '3'
+services:
+  nginx_proxy:
+    image: nginx:latest
+    ports:
+      - 4040:80
+    depends_on:
+      - backend
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./:/app
+    environment:
+      - NGINX_SERVER_NAME=localhost
+      - NEST_HOST=backend
+      - NEST_PORT=3001
+      - NGINX_MAX_BODY=100M
+    links:
+      - backend
+  backend:
+    build: .
+    restart: always
+    ports:
+      - 3030:3030
+    volumes:
+      - ./:/app
+    depends_on:
+      - db
+  db:
+    image: postgres:12
+    restart: always
+    environment:
+      POSTGRES_USER: 'sunlyhuor'
+      POSTGRES_PASSWORD: 'Huor1234'
+      POSTGRES_DB: 'schoolms_db'
+    volumes:
+    - postgresql_db:/var/lib/postgresql/data
+  pgadmin:
+    image: dpage/pgadmin4:7.3
+    restart: always
+    ports:
+      - 5050:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: 'sunlyhuor@huorclass.com'
+      PGADMIN_DEFAULT_PASSWORD: 'Huor1234'
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    depends_on:
+      - db
+volumes:
+  postgresql_db:
+  pgadmin:

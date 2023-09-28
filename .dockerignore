@@ -1,0 +1,6 @@
+dist/
+node_modules/
+nginx/
+Dockerfile
+docker-compose-test.yml
+docker-compose.yml
